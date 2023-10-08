@@ -24,14 +24,18 @@
     "tsc:watch": "tsc --watch"
   },
   "dependencies": {
+    "axios": "^1.5.1",
     "crawler": "^1.4.0",
     "puppeteer": "^21.3.8",
     "source-map-support": "^0.5.16"
   },
   "devDependencies": {
+    "@types/crawler": "^1.2.3",
     "@types/jest": "^29.5.5",
     "@types/node": "^13.7.7",
+    "@types/node-fetch": "^2.6.6",
     "@types/puppeteer": "^7.0.4",
+    "@types/xml2js": "^0.4.12",
     "@typescript-eslint/eslint-plugin": "^2.22.0",
     "@typescript-eslint/parser": "^2.22.0",
     "eslint": "^6.8.0",
