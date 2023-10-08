@@ -6,12 +6,12 @@ This project is a web scraping application that utilizes Puppeteer and Crawler t
 
 ## Table of Contents
 
-- [🌐 Environment Setup](#environment-setup)
-- [🚀 Installation](#installation)
-- [📦 Cloning the Repository](#cloning-the-repository)
-- [🏃 Running the Application](#running-the-application)
-- [🧪 Running Tests](#running-tests)
-- [🧹 Linting](#linting)
+- [🌐 Environment Setup](#-environment-setup)
+- [🚀 Installation](#-installation)
+- [📦 Cloning the Repository](#-cloning-the-repository)
+- [🏃 Running the Application](#-running-the-application)
+- [🧪 Running Tests](#-running-tests)
+- [🧹 Linting](#-linting)
 
 ## 🌐 Environment Setup
 
@@ -84,9 +84,3 @@ To run the linter and check your code for style issues, use the following comman
 ```bash
 npm run lint
 ```
-
-Feel free to replace the URLs and placeholders with your actual project information. This README.md file includes friendly emojis to enhance the user experience.
-
-## Project Description
-
-This project is a web scraping application that utilizes Puppeteer and Crawler to extract data from various websites. It provides a modular and scalable structure for web scraping, allowing customization for different websites.
