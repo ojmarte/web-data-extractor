@@ -1,3 +1,11 @@
-import "source-map-support/register";
+import { startCrawling } from './crawlers/index';
 
-console.log("Hello world!");
+const initialUrls = [
+    'https://example.com/page1',
+    'https://example.com/page2',
+    // Add more initial URLs as needed
+];
+
+initialUrls.forEach((url) => {
+    startCrawling(url);
+});
