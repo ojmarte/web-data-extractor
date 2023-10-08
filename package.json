@@ -24,6 +24,7 @@
     "tsc:watch": "tsc --watch"
   },
   "dependencies": {
+    "crawler": "^1.4.0",
     "puppeteer": "^21.3.8",
     "source-map-support": "^0.5.16"
   },
