@@ -1,7 +1,11 @@
 import { LaunchOptions } from 'puppeteer';
 
 export const defaultPuppeteerConfig: LaunchOptions = {
-    headless: true,
+    product: 'chrome',
+    waitForInitialPage: true,
+    timeout: 30000,
+    pipe: false,
+    headless: 'new',
     defaultViewport: {
         width: 1280,
         height: 800,
