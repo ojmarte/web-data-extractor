@@ -1,8 +1,7 @@
-import Crawler from 'crawler';
-import { crawlerConfig } from './setup';
+import { PuppeteerCrawler } from 'crawlee';
+import { crawleeConfig } from './setup';
+import { router } from './router';
 
-const crawler = new Crawler(crawlerConfig);
-
-export const startCrawling = (initialUrl: string): void => {
-    crawler.queue(initialUrl);
-}
+export const crawler = new PuppeteerCrawler({
+    requestHandler: router
+}, crawleeConfig);

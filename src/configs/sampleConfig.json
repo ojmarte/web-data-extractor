@@ -1,39 +1,40 @@
 {
-    "actions": [
-      {
-        "type": "navigate",
-        "url": "https://example.com"
-      },
-      {
-        "type": "click",
-        "selector": "button#search-button"
-      },
-      {
-        "type": "type",
-        "selector": "input#search-input",
-        "text": "web scraping"
-      },
-      {
-        "type": "wait",
-        "duration": 3000
-      },
-      {
-        "type": "extractText",
-        "selector": "h1.page-title"
-      },
-      {
-        "type": "extractAttribute",
-        "selector": "img.logo",
-        "attribute": "src"
-      },
-      {
-        "type": "screenshot",
-        "path": "screenshot.png"
-      },
-      {
-        "type": "pdf",
-        "path": "page.pdf"
-      }
-    ]
+  "startUrl": "https://example.com",
+  "actions": [
+    {
+      "type": "navigate",
+      "url": "https://example.com"
+    },
+    {
+      "type": "click",
+      "selector": "button#search-button"
+    },
+    {
+      "type": "type",
+      "selector": "input#search-input",
+      "text": "web scraping"
+    },
+    {
+      "type": "wait",
+      "duration": 3000
+    },
+    {
+      "type": "extractText",
+      "selector": "h1.page-title"
+    },
+    {
+      "type": "extractAttribute",
+      "selector": "img.logo",
+      "attribute": "src"
+    },
+    {
+      "type": "screenshot",
+      "path": "screenshot.png"
+    },
+    {
+      "type": "pdf",
+      "path": "page.pdf"
+    }
+  ]
 }
   

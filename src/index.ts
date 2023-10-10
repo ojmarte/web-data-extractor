@@ -1,4 +1,4 @@
-import { startCrawling } from './crawlers/index';
+import { crawler } from './crawlee/index';
 
 const initialUrls = [
     'https://example.com/page1',
@@ -7,5 +7,5 @@ const initialUrls = [
 ];
 
 initialUrls.forEach((url) => {
-    startCrawling(url);
+    crawler.run([url]);
 });

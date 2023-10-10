@@ -1,4 +1,4 @@
-import { Browser } from 'puppeteer';
+import { Page } from 'puppeteer';
 import { PuppeteerConfig } from '../types/puppeteerTypes';
 import {
     navigateTo,
@@ -18,9 +18,7 @@ import {
     extractInnerHTML
 } from './coreActions';
 
-export const performPageActions = async (browser: Browser, config: PuppeteerConfig): Promise<void> => {
-  const page = await browser.newPage();
-  
+export const performPageActions = async (page: Page, config: PuppeteerConfig): Promise<void> => {  
   for (const action of config.actions) {
     switch (action.type) {
         case 'navigate':
