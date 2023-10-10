@@ -15,7 +15,7 @@
     "lint": "eslint --ext js,jsx,ts,tsx .",
     "nodemon": "nodemon --watch dist",
     "prettier": "prettier --ignore-path .gitignore \"**/*.{css,html,js,jsx,json,ts,tsx,md,mdx,yml,yaml}\"",
-    "start": "node dist/index.js",
+    "start": "ts-node src/index.ts",
     "dev": "npm-run-all build --parallel tsc:watch nodemon",
     "test": "npm-run-all lint test:format test:run",
     "test:format": "npm run -- prettier --check",
@@ -44,6 +44,7 @@
     "prettier": "1.19.1",
     "rimraf": "^3.0.2",
     "t": "^0.5.1",
+    "ts-node": "^10.9.1",
     "typescript": "~3.8.3"
   },
   "prettier": {
