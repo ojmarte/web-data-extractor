@@ -2,7 +2,7 @@ import { Page } from 'puppeteer';
 
 // Helper Method: Navigate to a URL
 export const navigateTo = async (page: Page, url: string): Promise<void> => {
-    await page.goto(url, { waitUntil: 'domcontentloaded' });
+    await page.goto(url);
 };
 
 // Helper Method: Click on an element

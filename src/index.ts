@@ -1,8 +1,7 @@
 import { crawler } from './crawlee/index';
 
 const initialUrls = [
-    'https://example.com/page1',
-    'https://example.com/page2',
+    'https://github.com/topics/javascript',
     // Add more initial URLs as needed
 ];
 

@@ -13,6 +13,8 @@ router.use(async ({ page }) => {
 })
 
 router.addHandler('repository', async ({ page }) => {
+    // const jsonString: PuppeteerConfig = await readJSONFile('../configs/sampleConfig.json');
+    // performPageActions(page, jsonString);
     // This handler will execute for all requests
     // with the 'repository' label.
 });
@@ -20,6 +22,6 @@ router.addHandler('repository', async ({ page }) => {
 router.addDefaultHandler(async ({ page }) => {
     // This handler will execute for requests
     // that don't have a label.
-    const jsonString: PuppeteerConfig = await readJSONFile('../configs/sampleConfig.json');
-    performPageActions(page, jsonString);
+    // const jsonString: PuppeteerConfig = await readJSONFile('../configs/sampleConfig.json');
+    // performPageActions(page, jsonString);
 });
