@@ -2,6 +2,7 @@ import { createPuppeteerRouter } from 'crawlee';
 import { performPageActions } from '../puppeteer/pageActions';
 import { PuppeteerConfig } from '../types/puppeteerTypes';
 import { readJSONFile } from '../utils/readJSONFile';
+import config from '../configs/sampleConfig.json';
 
 export const router = createPuppeteerRouter();
 
@@ -12,16 +13,17 @@ router.use(async ({ page }) => {
     console.log(title);
 })
 
-router.addHandler('repository', async ({ page }) => {
-    // const jsonString: PuppeteerConfig = await readJSONFile('../configs/sampleConfig.json');
-    // performPageActions(page, jsonString);
-    // This handler will execute for all requests
-    // with the 'repository' label.
-});
+// router.addHandler('Games', async ({ page }) => {
+//     const jsonString: PuppeteerConfig = await readJSONFile('../configs/sampleConfig.json');
+//     performPageActions(page, jsonString);
+//     // This handler will execute for all requests
+//     // with the 'repository' label.
+// });
 
 router.addDefaultHandler(async ({ page }) => {
     // This handler will execute for requests
     // that don't have a label.
-    // const jsonString: PuppeteerConfig = await readJSONFile('../configs/sampleConfig.json');
-    // performPageActions(page, jsonString);
+    // const jsonString: PuppeteerConfig = await readJSONFile(`${config}`);
+    console.log(config);
+    performPageActions(page, config as PuppeteerConfig);
 });

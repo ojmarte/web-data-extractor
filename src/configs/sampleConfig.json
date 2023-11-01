@@ -1,9 +1,8 @@
 {
-  "startUrl": "https://github.com/topics/javascript",
   "actions": [
     {
-      "type": "navigate",
-      "url": "https://github.com/topics/javascript"
+      "type": "pdf",
+      "path": "https://www.pinnacle.com/es/"
     }
   ]
 }
