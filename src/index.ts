@@ -1,7 +1,7 @@
 import { crawler } from './crawlee/index';
 
 const initialUrls = [
-    'https://github.com/topics/javascript',
+    'https://www.pinnacle.com/es/',
     // Add more initial URLs as needed
 ];
 
