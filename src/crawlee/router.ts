@@ -1,7 +1,6 @@
 import { createPuppeteerRouter } from 'crawlee';
 import { performPageActions } from '../puppeteer/pageActions';
 import { PuppeteerConfig } from '../types/puppeteerTypes';
-import { readJSONFile } from '../utils/readJSONFile';
 import config from '../configs/sampleConfig.json';
 
 export const router = createPuppeteerRouter();
@@ -9,8 +8,8 @@ export const router = createPuppeteerRouter();
 router.use(async ({ page }) => {
     // This is for middlewares - functions that will be
     // executed on all routes, irrespective of label.
-    const title = await page.title()
-    console.log(title);
+    // const title = await page.title()
+    // console.log(title);
 })
 
 // router.addHandler('Games', async ({ page }) => {
@@ -20,10 +19,8 @@ router.use(async ({ page }) => {
 //     // with the 'repository' label.
 // });
 
-router.addDefaultHandler(async ({ page }) => {
+router.addDefaultHandler(async ({ page, log }) => {
     // This handler will execute for requests
-    // that don't have a label.
-    // const jsonString: PuppeteerConfig = await readJSONFile(`${config}`);
-    console.log(config);
-    performPageActions(page, config as PuppeteerConfig);
+    await performPageActions(page, config as PuppeteerConfig, log);
+
 });

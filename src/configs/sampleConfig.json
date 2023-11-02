@@ -1,8 +1,56 @@
 {
   "actions": [
     {
-      "type": "pdf",
-      "path": "https://www.pinnacle.com/es/"
+      "type": "click",
+      "selector": "a[data-gtm-id='sports_nav_top_Basketball']"
+    },
+    {
+      "type": "extractInnerHTML",
+      "selector": "div.contentBlock.square",
+      "childSelector": ".style_row__3CKCJ.style_row__3xXUg",
+      "name": "container",
+      "iterateInside": true,
+      "actions": [{
+        "type": "extractText",
+        "selector": ".style_matchupMetadata__1lG24 .style_gameInfoLabel__1Lt37:nth-child(1) .style_participant__1W3B4",
+        "name": "team1"
+      },
+      {
+        "type": "extractText",
+        "selector": ".style_matchupMetadata__1lG24 .style_gameInfoLabel__1Lt37:nth-child(2) .style_participant__1W3B4",
+        "name": "team2"
+      },
+      {
+        "type": "extractText",
+        "selector": ".style_row__3CKCJ .style_matchupDate__1st0T span",
+        "name": "time"
+      },
+      {
+        "type": "extractText",
+        "selector": ".style_buttons__1a73K .style_button-wrapper__2e5q6:nth-child(1) .style_label__2zBJo",
+        "name": "team1_spread"
+      },
+      {
+        "type": "extractText",
+        "selector": ".style_buttons__1a73K .style_button-wrapper__2e5q6:nth-child(1) .style_price__1-7o_",
+        "name": "team1_odds"
+      },
+      {
+        "type": "extractText",
+        "selector": ".style_buttons__1a73K .style_button-wrapper__2e5q6:nth-child(2) .style_label__2zBJo",
+        "name": "team2_spread"
+      },
+      {
+        "type": "extractText",
+        "selector": ".style_buttons__1a73K .style_button-wrapper__2e5q6:nth-child(2) .style_price__1-7o_",
+        "name": "team2_odds"
+      },
+      {
+        "type": "extractAttribute",
+        "selector": ".style_row__3CKCJ .style_metadata__3AWog a",
+        "attribute": "href",
+        "name": "game_link"
+      }]
     }
   ]
 }
