@@ -5,6 +5,14 @@
       "selector": "a[data-gtm-id='sports_nav_top_Basketball']"
     },
     {
+      "type": "click",
+      "selector": "a.style_rowLink__GdcTU"
+    },
+    {
+      "type": "wait",
+      "duration": 12000
+    },
+    {
       "type": "extractInnerHTML",
       "selector": "div.contentBlock.square",
       "childSelector": ".style_row__3CKCJ.style_row__3xXUg",

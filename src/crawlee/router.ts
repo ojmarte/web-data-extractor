@@ -1,4 +1,4 @@
-import { createPuppeteerRouter } from 'crawlee';
+import { createPuppeteerRouter, Dataset } from 'crawlee';
 import { performPageActions } from '../puppeteer/pageActions';
 import { PuppeteerConfig } from '../types/puppeteerTypes';
 import config from '../configs/sampleConfig.json';
@@ -21,6 +21,9 @@ router.use(async ({ page }) => {
 
 router.addDefaultHandler(async ({ page, log }) => {
     // This handler will execute for requests
-    await performPageActions(page, config as PuppeteerConfig, log);
-
+    const data: Array<any> = [];
+    await performPageActions(page, config as PuppeteerConfig, log, data);
+    
+    // console.log(data);
+    await Dataset.pushData(data);
 });

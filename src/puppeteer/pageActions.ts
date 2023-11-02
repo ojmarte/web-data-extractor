@@ -2,7 +2,12 @@ import { Page, ElementHandle } from 'puppeteer';
 import { PuppeteerConfig } from '../types/puppeteerTypes';
 import * as core from './coreActions';
 
-export const performPageActions = async (page: Page | ElementHandle<Element>, config: PuppeteerConfig, log?: any ): Promise<void> => {  
+export type StringIndexedObject = {
+    [key: string]: any;
+};
+
+export const performPageActions = async (page: Page | ElementHandle<Element>, config: PuppeteerConfig, log?: any, data?: Array<any>): Promise<void> => {
+    const obj: StringIndexedObject = {};
   for (const action of config.actions) {
     switch (action.type) {
         case 'navigate':
@@ -30,8 +35,7 @@ export const performPageActions = async (page: Page | ElementHandle<Element>, co
         case 'extractAttribute':
             if (action.selector && action.attribute && page instanceof Page) {
                 const attributeValue = await core.extractAttribute(page, action.selector, action.attribute);
-                // Do something with attributeValue, perhaps save it to a variable, log it, etc.
-                console.log(attributeValue);
+                obj[`${action.name}`] = attributeValue;
             }
             break;
 
@@ -74,8 +78,7 @@ export const performPageActions = async (page: Page | ElementHandle<Element>, co
         case 'extractText':
             if (action.selector) {
                 const text = await core.extractText(page, action.selector);
-                // You can store or log the extracted text as needed
-                log.info(`${action.name}: ${text}`);
+                obj[`${action.name}`] = text;
             }
             break;
 
@@ -99,10 +102,11 @@ export const performPageActions = async (page: Page | ElementHandle<Element>, co
             if (action.selector && action.childSelector && page instanceof Page) {
                 const childElements = await core.extractChildElements(page, action.selector, action.childSelector);
 
-                if (childElements && action.iterateInside && action.config) {
-                    for (const element of childElements) {
-                        await performPageActions(element, action.config as PuppeteerConfig, log);
+                if (childElements && action.iterateInside && action.config && data) {
+                    for (const element of childElements) {            
+                        await performPageActions(element, action.config as PuppeteerConfig, log, data);
                     }
+                    console.log(data);
                 }
             }
             
@@ -112,5 +116,8 @@ export const performPageActions = async (page: Page | ElementHandle<Element>, co
         console.warn(`Unknown action type: ${action.type}`);
     }
   }
+
+  if (Object.keys(obj).length > 0) data?.push(obj);
+  
   if (page instanceof Page) await page.close();
 };
