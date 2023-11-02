@@ -1,72 +1,76 @@
-import { Page } from 'puppeteer';
+import { Page, ElementHandle } from 'puppeteer';
 import { PuppeteerConfig } from '../types/puppeteerTypes';
 import * as core from './coreActions';
 
-export const performPageActions = async (page: Page, config: PuppeteerConfig, log?: any ): Promise<void> => {  
+export type StringIndexedObject = {
+    [key: string]: any;
+};
+
+export const performPageActions = async (page: Page | ElementHandle<Element>, config: PuppeteerConfig, log?: any, data?: Array<any>): Promise<void> => {
+    const obj: StringIndexedObject = {};
   for (const action of config.actions) {
     switch (action.type) {
         case 'navigate':
-            if (action.url) {
+            if (action.url && page instanceof Page) {
                 await core.navigateTo(page, action.url);
             }
             break;
 
         case 'click':
-            if (action.selector) {
+            if (action.selector && page instanceof Page) {
                 await core.clickElement(page, action.selector);
             }
             break;
 
         case 'type':
-            if (action.selector && action.text) {
+            if (action.selector && action.text && page instanceof Page) {
                 await core.typeIntoElement(page, action.selector, action.text);
             }
             break;
 
         case 'scrollToBottom':
-            await core.scrollToBottom(page);
+            if (page instanceof Page) await core.scrollToBottom(page);
             break;
 
         case 'extractAttribute':
-            if (action.selector && action.attribute) {
+            if (action.selector && action.attribute && page instanceof Page) {
                 const attributeValue = await core.extractAttribute(page, action.selector, action.attribute);
-                // Do something with attributeValue, perhaps save it to a variable, log it, etc.
-                console.log(attributeValue);
+                obj[`${action.name}`] = attributeValue;
             }
             break;
 
         case 'wait':
-            if (action.duration) {
+            if (action.duration && page instanceof Page) {
                 await core.wait(page, action.duration);
             }
             break;
 
         case 'selectDropdown':
-            if (action.selector && action.value) {
+            if (action.selector && action.value && page instanceof Page) {
                 await core.selectDropdownValue(page, action.selector, action.value);
             }
             break;
 
         case 'screenshot':
-            if (action.path) {
+            if (action.path && page instanceof Page) {
                 await core.captureScreenshot(page, action.path);
             }
             break;
 
         case 'pdf':
-            if (action.path) {
+            if (action.path && page instanceof Page) {
                 await core.capturePDF(page, action.path);
             }
             break;
 
         case 'hover':
-            if (action.selector) {
+            if (action.selector && page instanceof Page) {
                 await core.hoverOverElement(page, action.selector);
             }
             break;
 
         case 'setCheckbox':
-            if (action.selector && typeof action.checked !== 'undefined') {
+            if (action.selector && typeof action.checked !== 'undefined' && page instanceof Page) {
                 await core.setCheckbox(page, action.selector, action.checked);
             }
             break;
@@ -74,13 +78,12 @@ export const performPageActions = async (page: Page, config: PuppeteerConfig, lo
         case 'extractText':
             if (action.selector) {
                 const text = await core.extractText(page, action.selector);
-                // You can store or log the extracted text as needed
-                log.info(`${action.name}: ${text}`);
+                obj[`${action.name}`] = text;
             }
             break;
 
         case 'extractTextList':
-            if (action.selector) {
+            if (action.selector && page instanceof Page) {
                 const texts = await core.extractTextList(page, action.selector);
                 // You can store or log the extracted texts as needed
                 console.log(texts);
@@ -88,7 +91,7 @@ export const performPageActions = async (page: Page, config: PuppeteerConfig, lo
             break;
 
         case 'extractInputValue':
-            if (action.selector) {
+            if (action.selector && page instanceof Page) {
                 const inputValue = await core.extractInputValue(page, action.selector);
                 // You can store or log the extracted input value as needed
                 console.log(inputValue);
@@ -96,13 +99,14 @@ export const performPageActions = async (page: Page, config: PuppeteerConfig, lo
             break;
 
         case 'extractInnerHTML':
-            if (action.selector && action.childSelector) {
+            if (action.selector && action.childSelector && page instanceof Page) {
                 const childElements = await core.extractChildElements(page, action.selector, action.childSelector);
-            
-                if (childElements && action.iterateInside && action.config) {
-                    for (const element of childElements) {
-                        await performPageActions(element, action.config as PuppeteerConfig, log);
+
+                if (childElements && action.iterateInside && action.config && data) {
+                    for (const element of childElements) {            
+                        await performPageActions(element, action.config as PuppeteerConfig, log, data);
                     }
+                    console.log(data);
                 }
             }
             
@@ -113,5 +117,7 @@ export const performPageActions = async (page: Page, config: PuppeteerConfig, lo
     }
   }
 
-  await page.close();
+  if (Object.keys(obj).length > 0) data?.push(obj);
+  
+  if (page instanceof Page) await page.close();
 };

@@ -5,12 +5,21 @@
       "selector": "a[data-gtm-id='sports_nav_top_Basketball']"
     },
     {
+      "type": "click",
+      "selector": "a.style_rowLink__GdcTU"
+    },
+    {
+      "type": "wait",
+      "duration": 12000
+    },
+    {
       "type": "extractInnerHTML",
       "selector": "div.contentBlock.square",
       "childSelector": ".style_row__3CKCJ.style_row__3xXUg",
       "name": "container",
       "iterateInside": true,
-      "actions": [{
+      "config": {
+        "actions": [{
         "type": "extractText",
         "selector": ".style_matchupMetadata__1lG24 .style_gameInfoLabel__1Lt37:nth-child(1) .style_participant__1W3B4",
         "name": "team1"
@@ -50,7 +59,7 @@
         "selector": ".style_row__3CKCJ .style_metadata__3AWog a",
         "attribute": "href",
         "name": "game_link"
-      }]
+      }]}
     }
   ]
 }
