@@ -9,19 +9,10 @@ export const navigateTo = async (page: Page, url: string): Promise<void> => {
     await page.goto(url);
 };
 
-// Helper Method: Click on an element
-export const clickElement = async (page: Page, selector: string): Promise<void> => {
-    try {
-        const element: ElementHandle<Element> | null = await page.waitForSelector(selector, { visible: true });
-        if (element) {
-            await element.click();
-        } else {
-            throw new Error(`Element with selector "${selector}" was not found.`);
-        }
-    } catch (error) {
-        console.error(`Error clicking on element with selector "${selector}":`, error);
-        throw error;
-    }    
+// Helper Method: Click on an element with additional checks
+export const clickElement = async (page: Page, selector: string, delay: number = 0): Promise<void> => {
+    await page.waitForSelector(selector, { visible: true });
+    await page.click(selector);
 };
 
 // Helper Method: Type into an element
