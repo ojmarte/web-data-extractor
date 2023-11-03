@@ -11,28 +11,33 @@ export const performPageActions = async (page: Page | ElementHandle<Element>, co
   for (const action of config.actions) {
     switch (action.type) {
         case 'navigate':
+            log.info(`${action.type}: ${action.selector}`)
             if (action.url && page instanceof Page) {
                 await core.navigateTo(page, action.url);
             }
             break;
 
         case 'click':
+            log.info(`${action.type}: ${action.selector}`)
             if (action.selector && page instanceof Page) {
                 await core.clickElement(page, action.selector);
             }
             break;
 
         case 'type':
+            log.info(`${action.type}: ${action.selector}`)
             if (action.selector && action.text && page instanceof Page) {
                 await core.typeIntoElement(page, action.selector, action.text);
             }
             break;
 
         case 'scrollToBottom':
+            log.info(`${action.type}: ${action.selector}`)
             if (page instanceof Page) await core.scrollToBottom(page);
             break;
 
         case 'extractAttribute':
+            log.info(`${action.type}: ${action.selector}`)
             if (action.selector && action.attribute && page instanceof Page) {
                 const attributeValue = await core.extractAttribute(page, action.selector, action.attribute);
                 obj[`${action.name}`] = attributeValue;
@@ -40,42 +45,54 @@ export const performPageActions = async (page: Page | ElementHandle<Element>, co
             break;
 
         case 'wait':
+            log.info(`${action.type}: ${action.duration}`)
             if (action.duration && page instanceof Page) {
                 await core.wait(page, action.duration);
             }
             break;
 
         case 'selectDropdown':
+            log.info(`${action.type}: ${action.selector}`)
             if (action.selector && action.value && page instanceof Page) {
                 await core.selectDropdownValue(page, action.selector, action.value);
             }
             break;
 
         case 'screenshot':
+            log.info(`${action.type}: ${action.selector}`)
             if (action.path && page instanceof Page) {
                 await core.captureScreenshot(page, action.path);
             }
             break;
 
         case 'pdf':
+            log.info(`${action.type}: ${action.selector}`)
             if (action.path && page instanceof Page) {
                 await core.capturePDF(page, action.path);
             }
             break;
 
         case 'hover':
+            log.info(`${action.type}: ${action.selector}`)
             if (action.selector && page instanceof Page) {
                 await core.hoverOverElement(page, action.selector);
+
+                if (action.childSelector) {
+                    log.info(`${action.type}: ${action.childSelector}`)
+                    await core.clickElement(page, action.childSelector);
+                }
             }
             break;
 
         case 'setCheckbox':
+            log.info(`${action.type}: ${action.selector}`)
             if (action.selector && typeof action.checked !== 'undefined' && page instanceof Page) {
                 await core.setCheckbox(page, action.selector, action.checked);
             }
             break;
 
         case 'extractText':
+            log.info(`${action.type}: ${action.selector}`)
             if (action.selector) {
                 const text = await core.extractText(page, action.selector);
                 obj[`${action.name}`] = text;
@@ -83,6 +100,7 @@ export const performPageActions = async (page: Page | ElementHandle<Element>, co
             break;
 
         case 'extractTextList':
+            log.info(`${action.type}: ${action.selector}`)
             if (action.selector && page instanceof Page) {
                 const texts = await core.extractTextList(page, action.selector);
                 // You can store or log the extracted texts as needed
@@ -91,6 +109,7 @@ export const performPageActions = async (page: Page | ElementHandle<Element>, co
             break;
 
         case 'extractInputValue':
+            log.info(`${action.type}: ${action.selector}`)
             if (action.selector && page instanceof Page) {
                 const inputValue = await core.extractInputValue(page, action.selector);
                 // You can store or log the extracted input value as needed
@@ -99,6 +118,7 @@ export const performPageActions = async (page: Page | ElementHandle<Element>, co
             break;
 
         case 'extractInnerHTML':
+            log.info(`${action.type}: ${action.selector}`)
             if (action.selector && action.childSelector && page instanceof Page) {
                 const childElements = await core.extractChildElements(page, action.selector, action.childSelector);
 
