@@ -2,7 +2,7 @@ export type Action = {
     type: 'navigate' | 'click' | 'type' | 'scrollToBottom' | 
           'extractAttribute' | 'wait' | 'selectDropdown' | 
           'screenshot' | 'pdf' | 'hover' | 'setCheckbox' | 
-          'extractText' | 'extractTextList' | 'extractInputValue' | 'extractInnerHTML' | 'extractElement';
+          'extractText' | 'extractTextList' | 'extractInputValue' | 'extractInnerHTML' | 'extractElement' | 'navigateBack';
     selector?: string;
     url?: string;
     text?: string;

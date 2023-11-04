@@ -16,11 +16,20 @@ export const performPageActions = async (page: Page | ElementHandle<Element>, co
                 await core.navigateTo(page, action.url);
             }
             break;
+        case 'navigateBack':
+            log.info(`${action.type}`)
+            if (action.url && page instanceof Page) {
+                await core.navigateBack(page);
+                log.info(`Current URL: ${page.url()}`);
+            }
+            break;
 
         case 'click':
             log.info(`${action.type}: ${action.selector}`)
             if (action.selector && page instanceof Page) {
-                await core.clickElement(page, action.selector);
+                await core.clickElement(page, action.selector, action.duration);
+                log.info(`Current URL: ${page.url()}`);
+
             }
             break;
 
@@ -47,7 +56,7 @@ export const performPageActions = async (page: Page | ElementHandle<Element>, co
         case 'wait':
             log.info(`${action.type}: ${action.duration}`)
             if (action.duration && page instanceof Page) {
-                await core.wait(page, action.duration);
+                await core.wait(action.duration);
             }
             break;
 
@@ -137,7 +146,7 @@ export const performPageActions = async (page: Page | ElementHandle<Element>, co
     }
   }
 
-  if (Object.keys(obj).length > 0) data?.push(obj);
+  if (Object.keys(obj).length > 0 && Boolean(data)) data?.push(obj);
   
   if (page instanceof Page) await page.close();
 };

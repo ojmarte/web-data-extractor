@@ -1,16 +1,22 @@
 {
   "actions": [
     {
-      "type": "hover",
-      "selector": "a[data-gtm-id='sports_nav_top_Basketball'].style_accordion__2MtOd"
+      "type": "click",
+      "selector": "a[data-gtm-id='sports_nav_top_Basketball']",
+      "duration": 5000
     },
     {
-      "type": "selectDropdown",
-      "selector": "a[data-gtm-id='sports_nav_top_Basketball'].style_accordion__2MtOd"
+      "type": "click",
+      "selector": "a.style_btn__3znzW",
+      "duration": 5000
     },
     {
-      "type": "wait",
-      "duration": 12000
+      "type": "navigateBack"
+    },
+    {
+      "type": "click",
+      "selector": "a.style_btn__3znzW[href*='freseros-de-irapuato-vs-dorados-de-chihuahua']",
+      "duration": 5000
     }
   ]
 }

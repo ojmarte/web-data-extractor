@@ -1,18 +1,38 @@
 import { Page, ElementHandle } from 'puppeteer';
 
+type PuppeteerContext = Page | ElementHandle;
+
 const isPageClosed = (page: Page): boolean => {
     return !page.mainFrame() || page.mainFrame().detached;
 };
+
+const isPage = (context: PuppeteerContext): context is Page => {
+    return (context as Page).goBack !== undefined;
+}
 
 // Helper Method: Navigate to a URL
 export const navigateTo = async (page: Page, url: string): Promise<void> => {
     await page.goto(url);
 };
 
+export const navigateBack = async (context: PuppeteerContext): Promise<void> => {
+    if (isPage(context)) {
+        try {
+            await context.goBack({ waitUntil: 'networkidle0' });
+        } catch (error) {
+            console.error('Failed to navigate back:', error);
+        }
+    } else {
+        console.error('navigateBack handler was called with a non-Page context');
+    }
+}
+
 // Helper Method: Click on an element with additional checks
-export const clickElement = async (page: Page, selector: string, delay: number = 0): Promise<void> => {
-    await page.waitForSelector(selector, { visible: true });
-    await page.click(selector);
+export const clickElement = async (context: PuppeteerContext, selector: string, delay: number = 0): Promise<void> => {
+    await context.waitForSelector(selector, { visible: true });
+    const element = await context.$(selector);
+    if (delay) await wait(delay);
+    if (element) await element.click();
 };
 
 // Helper Method: Type into an element
@@ -35,8 +55,8 @@ export const extractAttribute = async (page: Page, selector: string, attribute: 
 };
 
 // Helper Method: Wait for a specific amount of time (e.g., 3 seconds)
-export const wait = async (page: Page, duration: number): Promise<void> => {
-    await page.waitForTimeout(duration);
+export const wait = (duration: number): Promise<void> => {
+    return new Promise((resolve) => setTimeout(resolve, duration));
 };
 
 // Helper Method: Select a value from a dropdown
