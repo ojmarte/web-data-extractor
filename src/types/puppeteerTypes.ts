@@ -2,7 +2,7 @@ export type Action = {
     type: 'navigate' | 'click' | 'type' | 'scrollToBottom' | 
           'extractAttribute' | 'wait' | 'selectDropdown' | 
           'screenshot' | 'pdf' | 'hover' | 'setCheckbox' | 
-          'extractText' | 'extractTextList' | 'extractInputValue' | 'extractInnerHTML' | 'extractElement' | 'navigateBack' | 'hoverOnSide';
+          'extractText' | 'extractTextList' | 'extractInputValue' | 'extractInnerHTML' | 'extractElement' | 'navigateBack' | 'hoverOnSide' | 'clickOnSide';
     selector?: string;
     url?: string;
     text?: string;
@@ -15,6 +15,7 @@ export type Action = {
     iterateInside?: boolean;
     config?: PuppeteerConfig;
     childSelector?: string;
+    side?: "right" | "left";
 };
   
 export interface PuppeteerConfig {
