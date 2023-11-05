@@ -1,16 +1,14 @@
 {
   "actions": [
     {
-      "type": "clickOnSide",
-      "selector": "a[data-gtm-id='sports_nav_top_Basketball']"
-    },
-    {
-      "type": "click",
-      "selector": "a[class='style_compact__VqecV'][href='/en/basketball/nba/matchups/']"
-    },
-    {
-      "type": "click",
-      "selector": "a[href='/en/basketball/nba/los-angeles-lakers-vs-orlando-magic/1581502859/']"
+      "type": "iterateAndPerform",
+      "selector": "aside.style_desktop_left-sidebar__RUqh1 > :nth-child(2) > ul > li",
+      "config": {
+        "actions": [{
+          "type": "click",
+          "selector": "a"
+        }]
+      }
     },
     {
       "type": "wait",

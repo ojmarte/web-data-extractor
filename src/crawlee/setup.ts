@@ -6,3 +6,13 @@ export const crawleeConfig = new Configuration({
     // defaultBrowserPath: '/mnt/c/Program Files/BraveSoftware/Brave-Browser/Application/brave.exe',
     headless: false
 });
+
+// "config": {
+//     "actions": [
+//       {
+//         "type": "click",
+//         "selector": "a[data-gtm-id]",
+//         "duration": 6000
+//       }
+//     ]
+//   }
