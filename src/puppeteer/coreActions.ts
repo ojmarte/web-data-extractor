@@ -101,7 +101,47 @@ export const hoverOverElement = async (page: Page, selector: string, delay?: num
 };
 
 // Helper Method: Hover on side
-export const hoverOnSide = async (page: Page, selector: string, side: string, delay?: number, log?: any): Promise<void> => {
+export const hoverOnSide = async (page: Page, selector: string, side = 'right', delay?: number, log?: any): Promise<void> => {
+    try {
+        if (delay) {
+            log.info(`Delaying ${delay} miliseconds`)
+            await wait(delay);
+        }
+    
+        await page.waitForSelector(selector, { visible: true });
+    
+        const rect = await page.evaluate((selector) => {
+            console.log(`Looking for ${selector}`);
+            const element = document.querySelector(selector);
+            if (element) {
+                const { top, right, bottom, left, width, height } = element.getBoundingClientRect();
+                return { top, right, bottom, left, width, height };
+            }
+            return null;
+
+        }, selector);
+
+        if (!rect) throw new Error(`Element with selector "${selector}" not found.`);
+    
+        const hoverY = Math.round(rect?.top + (rect?.height / 2));
+    
+        let hoverX;
+        if (side === 'right') {
+            hoverX = Math.round(rect.left + rect?.width - 1);
+        } else if (side === 'left') {
+            hoverX = Math.round(rect.left + 1);
+        } else {
+            throw new Error('Side must be "right" or "left".');
+        }
+    
+        await page.mouse.move(hoverX, hoverY);
+    } catch (error) {
+        log.error(`Error hovering element '${selector}': ${error}`);
+    }
+}
+
+// Helper Method: Hover on side
+export const clickOnSide = async (page: Page, selector: string, side = 'right', delay?: number, log?: any): Promise<void> => {
     try {
         if (delay) {
             log.info(`Delaying ${delay} miliseconds`)
@@ -136,9 +176,8 @@ export const hoverOnSide = async (page: Page, selector: string, side: string, de
     
         await page.mouse.click(hoverX, hoverY);
     } catch (error) {
-        log.error(`Error hovering element '${selector}': ${error}`);
+        log.error(`Error clicking element '${selector}': ${error}`);
     }
-    
 }
 
 // Helper Method: setCheckbox 

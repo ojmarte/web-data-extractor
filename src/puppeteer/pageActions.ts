@@ -29,6 +29,13 @@ export const performPageActions = async (page: Page | ElementHandle<Element>, co
                 await core.clickElement(page, action.selector, action.duration, log);
             }
             break;
+        
+        case 'clickOnSide':
+            log.info(`${action.type}: ${action.selector}`)
+            if (action.selector && page instanceof Page) {
+                await core.clickOnSide(page, action.selector, action.side, action.duration, log);
+            }
+            break;
 
         case 'type':
             log.info(`${action.type}: ${action.selector}`)
@@ -92,7 +99,7 @@ export const performPageActions = async (page: Page | ElementHandle<Element>, co
         case 'hoverOnSide':
             log.info(`${action.type}: ${action.selector}`)
             if (action.selector && page instanceof Page) {
-                await core.hoverOnSide(page, action.selector, 'right', action.duration, log);
+                await core.hoverOnSide(page, action.selector, action.side, action.duration, log);
             }
             break;
 
