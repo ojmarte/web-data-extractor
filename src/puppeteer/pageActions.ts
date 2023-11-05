@@ -11,25 +11,22 @@ export const performPageActions = async (page: Page | ElementHandle<Element>, co
   for (const action of config.actions) {
     switch (action.type) {
         case 'navigate':
-            log.info(`${action.type}: ${action.selector}`)
+            log.info(`Running ${action.type}: ${action.url}`)
             if (action.url && page instanceof Page) {
-                await core.navigateTo(page, action.url);
+                await core.navigateTo(page, action.url, log);
             }
             break;
         case 'navigateBack':
-            log.info(`${action.type}`)
-            if (action.url && page instanceof Page) {
-                await core.navigateBack(page);
-                log.info(`Current URL: ${page.url()}`);
+            log.info(`Running ${action.type}`)
+            if (page instanceof Page) {
+                await core.navigateBack(page, log);
             }
             break;
 
         case 'click':
             log.info(`${action.type}: ${action.selector}`)
             if (action.selector && page instanceof Page) {
-                await core.clickElement(page, action.selector, action.duration);
-                log.info(`Current URL: ${page.url()}`);
-
+                await core.clickElement(page, action.selector, action.duration, log);
             }
             break;
 
@@ -84,12 +81,18 @@ export const performPageActions = async (page: Page | ElementHandle<Element>, co
         case 'hover':
             log.info(`${action.type}: ${action.selector}`)
             if (action.selector && page instanceof Page) {
-                await core.hoverOverElement(page, action.selector);
-
+                await core.hoverOverElement(page, action.selector, action.duration, log);
                 if (action.childSelector) {
                     log.info(`${action.type}: ${action.childSelector}`)
-                    await core.clickElement(page, action.childSelector);
+                    await core.clickElement(page, action.childSelector, action.duration, log);
                 }
+            }
+            break;
+
+        case 'hoverOnSide':
+            log.info(`${action.type}: ${action.selector}`)
+            if (action.selector && page instanceof Page) {
+                await core.hoverOnSide(page, action.selector, 'right', action.duration, log);
             }
             break;
 

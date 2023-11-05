@@ -11,28 +11,42 @@ const isPage = (context: PuppeteerContext): context is Page => {
 }
 
 // Helper Method: Navigate to a URL
-export const navigateTo = async (page: Page, url: string): Promise<void> => {
-    await page.goto(url);
+export const navigateTo = async (page: Page, url: string, log?: any): Promise<void> => {
+    try {
+        await page.goto(url);
+    } catch (error) {
+        log.error(`Failed to navigate to ${url}: ${error}`);
+        throw error;
+    }
 };
 
-export const navigateBack = async (context: PuppeteerContext): Promise<void> => {
+// Helper Method: Navigate to the previous URL
+export const navigateBack = async (context: PuppeteerContext, log?: any): Promise<void> => {
     if (isPage(context)) {
         try {
             await context.goBack({ waitUntil: 'networkidle0' });
+            log.info(`Current URL: ${context.url()}`);
         } catch (error) {
-            console.error('Failed to navigate back:', error);
+            log.error('Failed to navigate back:', error);
         }
     } else {
-        console.error('navigateBack handler was called with a non-Page context');
+        log.error('navigateBack handler was called with a non-Page context');
     }
 }
 
 // Helper Method: Click on an element with additional checks
-export const clickElement = async (context: PuppeteerContext, selector: string, delay: number = 0): Promise<void> => {
-    await context.waitForSelector(selector, { visible: true });
-    const element = await context.$(selector);
-    if (delay) await wait(delay);
-    if (element) await element.click();
+export const clickElement = async (context: PuppeteerContext, selector: string, delay?: number, log?: any): Promise<void> => {
+    try {
+        await context.waitForSelector(selector, { visible: true });
+        const element = await context.$(selector);
+        if (delay) {
+            log.info(`Delaying ${delay} miliseconds`);
+            await wait(delay);
+        }
+        if (element) await element.click();
+    } catch (error) {
+        log.error(`Error clicking element '${selector}': ${error}`);
+    }
 };
 
 // Helper Method: Type into an element
@@ -76,11 +90,56 @@ export const capturePDF = async (page: Page, path: string): Promise<void> => {
 };
 
 // Helper Method: Hover the mouse pointer over a specific element
-export const hoverOverElement = async (page: Page, selector: string): Promise<void> => {
+export const hoverOverElement = async (page: Page, selector: string, delay?: number, log?: any): Promise<void> => {
     await page.waitForSelector(selector, { visible: true });
+    if (delay) {
+        log.info(`Delaying ${delay} miliseconds`)
+        await wait(delay);
+    }
     const element = await page.$(selector);
     if (element) await element.hover();
 };
+
+// Helper Method: Hover on side
+export const hoverOnSide = async (page: Page, selector: string, side: string, delay?: number, log?: any): Promise<void> => {
+    try {
+        if (delay) {
+            log.info(`Delaying ${delay} miliseconds`)
+            await wait(delay);
+        }
+    
+        await page.waitForSelector(selector, { visible: true });
+    
+        const rect = await page.evaluate((selector) => {
+            console.log(`Looking for ${selector}`);
+            const element = document.querySelector(selector);
+            if (element) {
+                const { top, right, bottom, left, width, height } = element.getBoundingClientRect();
+                return { top, right, bottom, left, width, height };
+            }
+            return null;
+
+        }, selector);
+
+        if (!rect) throw new Error(`Element with selector "${selector}" not found.`);
+    
+        const hoverY = Math.round(rect?.top + (rect?.height / 2));
+    
+        let hoverX;
+        if (side === 'right') {
+            hoverX = Math.round(rect.left + rect?.width - 1);
+        } else if (side === 'left') {
+            hoverX = Math.round(rect.left + 1);
+        } else {
+            throw new Error('Side must be "right" or "left".');
+        }
+    
+        await page.mouse.click(hoverX, hoverY);
+    } catch (error) {
+        log.error(`Error hovering element '${selector}': ${error}`);
+    }
+    
+}
 
 // Helper Method: setCheckbox 
 export const setCheckbox = async (page: Page, selector: string, checked: boolean): Promise<void> => {
