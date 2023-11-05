@@ -25,7 +25,7 @@ export const performPageActions = async (page: Page | ElementHandle<Element>, co
 
         case 'click':
             log.info(`${action.type}: ${action.selector}`)
-            if (action.selector && page instanceof Page) {
+            if (action.selector) {
                 await core.clickElement(page, action.selector, action.duration, log);
             }
             break;
@@ -148,7 +148,20 @@ export const performPageActions = async (page: Page | ElementHandle<Element>, co
                     console.log(data);
                 }
             }
-            
+            break;
+        
+        case 'iterateAndPerform':
+            log.info(`${action.type}: ${action.selector}`);
+            if (action.selector) {
+                await page.waitForSelector(action.selector);
+                const elements = await page.$$(action.selector);
+
+                console.log("The size of elements: " + elements.length)
+
+                for (const element of elements) {
+                    await performPageActions(element, action.config as PuppeteerConfig, log, data);
+                }
+            }
             break;
 
       default:
